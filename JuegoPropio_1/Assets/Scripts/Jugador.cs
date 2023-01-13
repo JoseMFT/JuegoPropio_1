@@ -6,55 +6,61 @@ using TMPro;
 
 public class Jugador: MonoBehaviour {
     Vector3 playerPos, prevPos, ogSize, dashImagePos;
-    public bool canJump, rescale = true, canDash = true;
-    float speed = 10f, jumpForce = 7f, coolDown = 5f;
-    public int jumpCount = 0;
+    public bool rescale = true, canDash = true;
+    float speed = 10f, jumpForce = 10f, dashCoolDown = 5f, jumpCoolDown = 7.5f;
+    public int jumpCount = 0, jumpLimit = 2;
     Rigidbody2D rigidbodyCharacter;
 
     [SerializeField]
-    GameObject jumpCD, dashCD;
+    Image jumpCD, dashCD;
 
 
 
     [SerializeField]
-    TextMeshProUGUI textoCD;
+    TextMeshProUGUI textoCDDash, textoCDJump;
 
     private void Awake () {
         ogSize = gameObject.transform.localScale;
         rigidbodyCharacter = gameObject.GetComponent<Rigidbody2D> ();
     }
+
     private void Start () {
         dashImagePos = dashCD.transform.position;
-        textoCD.text = " ";
+        textoCDDash.text = " ";
     }
+
     void Update () {
         prevPos = playerPos;
         playerPos = gameObject.transform.position;
 
-        if (canJump == true && Input.GetKey ("space")) {
+        if (jumpCount < jumpLimit && Input.GetKey ("space")) {
             jumpCount++;
-            canJump = false;
             rigidbodyCharacter.AddForce (Vector3.up * jumpForce, ForceMode2D.Impulse);
         }
+            if (Input.GetKey ("d")) {
+                gameObject.transform.position += Vector3.right * Time.deltaTime * speed;
+                if (canDash == true) {
+                    if (Input.GetKey ("left shift")) {
+                    dashCD.fillAmount = 0;
+                    gameObject.GetComponent<TrailRenderer> ().enabled = true;
+                        canDash = false;
+                        gameObject.transform.position += Vector3.right * speed;
+                        speed += speed * .25f;
+                    }
+                }
 
-        if (Input.GetKey ("d")) {
-            gameObject.transform.position += Vector3.right * Time.deltaTime * speed;
-            if (canDash == true) {
-                if (Input.GetKey ("left shift")) {
-                    canDash = false;
-                    rigidbodyCharacter.AddForce (Vector3.right * speed * 2f, ForceMode2D.Impulse);
+            } else if (Input.GetKey ("a")) {
+                gameObject.transform.position += Vector3.left * Time.deltaTime * speed;
+                if (canDash == true) {
+                    if (Input.GetKey ("left shift")) {
+                    dashCD.fillAmount = 0f;
+                    gameObject.GetComponent<TrailRenderer> ().enabled = true;
+                        canDash = false;
+                        gameObject.transform.position += Vector3.left * speed;
+                    speed += speed * .25f;
+                    }
                 }
             }
-
-        } else if (Input.GetKey ("a")) {
-            gameObject.transform.position += Vector3.left * Time.deltaTime * speed;
-            if (canDash == true) {
-                if (Input.GetKey ("left shift")) {
-                    canDash = false;
-                    rigidbodyCharacter.AddForce (Vector3.left * speed * 2f, ForceMode2D.Impulse);
-                }
-            }
-        }
 
         if (Input.GetKey ("s")) {
             rescale = false;
@@ -67,29 +73,43 @@ public class Jugador: MonoBehaviour {
             }
         }
 
-        if (prevPos.y > playerPos.y) {
-            if (jumpCount < 2) {
-                canJump = true;
-            }
-        }
-
         if (rescale == true) {
             gameObject.transform.localScale = ogSize;
         }
 
         if (canDash == false) {
 
-            if (coolDown >= 0f) {
-                coolDown -= Time.deltaTime;
-                dashCD.transform.localScale -= new Vector3 (0f, dashCD.transform.localScale.y / coolDown * Time.deltaTime, 0f);
-                dashCD.transform.position = dashImagePos - new Vector3 (0f, dashCD.transform.localScale.y / coolDown * Time.deltaTime, 0f);
-                textoCD.text = coolDown.ToString (".00") + " s";
+            if (dashCoolDown >= 0f) {
+                dashCoolDown -= Time.deltaTime;
+                dashCD.fillAmount += 1f / 5f * Time.deltaTime;
+                textoCDDash.text = dashCoolDown.ToString (".00") + " s";
             } else {
-                coolDown = 5f;
-                dashCD.transform.localScale = Vector3.one * .5f;
-                dashCD.transform.position = dashImagePos;
-                textoCD.text = " ";
+                speed = speed / 1.25f;
+                gameObject.GetComponent<TrailRenderer> ().enabled = false;
+                dashCoolDown = 5f;
+                dashCD.fillAmount = 1f;
+                textoCDDash.text = " ";
                 canDash = true;
+            }
+        }
+
+        if (jumpCount == 2) {
+            jumpLimit--;
+        }
+
+        if (jumpLimit == 1) {
+
+            jumpCD.fillAmount = 0f;
+
+            if (jumpCoolDown >= 0f) {
+                jumpCoolDown -= Time.deltaTime;
+                jumpCD.fillAmount += 1f / 7.5f * Time.deltaTime;
+                textoCDJump.text = jumpCoolDown.ToString (".00") + " s";
+            } else {
+                jumpLimit++;
+                jumpCoolDown = 7.5f;
+                jumpCD.fillAmount = 1f;
+                textoCDJump.text = " ";
             }
         }
 
@@ -98,7 +118,6 @@ public class Jugador: MonoBehaviour {
     private void OnCollisionEnter2D (Collision2D collision) {
         if (collision.gameObject.tag == "Floor") {
             jumpCount = 0;
-            canJump = true;
         }
     }
 }
