@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Jugador: MonoBehaviour {
     Vector3 playerPos, prevPos, ogSize;
     public bool canJump, rescale = true, canDash = true;
     float speed = 10f, jumpForce = 7f;// coolDown = 5f;
     public int jumpCount = 0;
-
     Rigidbody2D rigidbodyCharacter;
+
+    [SerializeField]
+    Image jumpCD, dashCD;
 
     private void Awake () {
         ogSize = gameObject.transform.localScale;
@@ -68,9 +71,9 @@ public class Jugador: MonoBehaviour {
     }
 
     public void DashCD () {
-        
-        for (float coolDown = 5f; coolDown <= 0f; coolDown -= Time.deltaTime) {
 
+        for (float coolDown = 5f; coolDown <= 0f; coolDown -= Time.deltaTime) {
+            dashCD.fillAmount = coolDown / 5f;
         }
     }
 
