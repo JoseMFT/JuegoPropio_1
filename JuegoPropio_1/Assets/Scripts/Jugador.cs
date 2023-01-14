@@ -7,14 +7,15 @@ using TMPro;
 public class Jugador: MonoBehaviour {
     Vector3 playerPos, prevPos, ogSize, dashImagePos;
     public bool rescale = true, canDash = true, onAir = false;
-    float speed = 15f, jumpForce = 6f, dashCoolDown = 5f, doubleJumpCoolDown = 7.5f;
+    float speed = 15f, jumpForce = 10f, dashCoolDown = 5f, doubleJumpCoolDown = 7.5f;
     public int jumpCount = 0, jumpLimit = 2;
     Rigidbody2D rigidbodyCharacter;
 
     [SerializeField]
     Image jumpCD, dashCD;
 
-
+    [SerializeField]
+    GameObject face;
 
     [SerializeField]
     TextMeshProUGUI textoCDDash, textoCDJump;
@@ -43,11 +44,14 @@ public class Jugador: MonoBehaviour {
                 if (playerPos.y < prevPos.y && Input.GetKey ("space")) {
                     jumpCD.fillAmount = 0f;
                     jumpCount++;
-                    rigidbodyCharacter.AddForce (Vector3.up * jumpForce * 6f, ForceMode2D.Impulse);
+                    rigidbodyCharacter.AddForce (Vector3.up * jumpForce * 1.5f, ForceMode2D.Impulse);
                 }
             }
         }
             if (Input.GetKey ("d")) {
+            if (face.transform.rotation != Quaternion.Euler (0f, 0f, 0f)) {
+                face.transform.rotation = Quaternion.Euler (0f, 0f, 0f);
+            }
                 gameObject.transform.position += Vector3.right * Time.deltaTime * speed;
                 if (canDash == true) {
                     if (Input.GetKey ("left shift")) {
@@ -60,6 +64,9 @@ public class Jugador: MonoBehaviour {
                 }
 
             } else if (Input.GetKey ("a")) {
+            if (face.transform.rotation != Quaternion.Euler (0f, 180f, 0f)) {
+                face.transform.rotation = Quaternion.Euler (0f, 180f, 0f);
+            }
                 gameObject.transform.position += Vector3.left * Time.deltaTime * speed;
                 if (canDash == true) {
                     if (Input.GetKey ("left shift")) {
@@ -85,8 +92,10 @@ public class Jugador: MonoBehaviour {
             }
         } else if (onAir == true) {
             if (Input.GetKey ("s")) {
-                rigidbodyCharacter.mass = 6f;
-                gameObject.transform.position += Vector3.down * Time.deltaTime * speed;
+                rigidbodyCharacter.mass = 3f;
+                rescale = true;
+            } else if (!Input.GetKey ("s")) {
+                rigidbodyCharacter.mass = 1f;
                 rescale = true;
             }
         }
