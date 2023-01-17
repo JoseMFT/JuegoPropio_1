@@ -21,6 +21,7 @@ public class Jugador: MonoBehaviour {
     TextMeshProUGUI textoCDDash, textoCDJump;
 
     private void Awake () {
+        face.SetActive (true);
         ogSize = gameObject.transform.localScale;
         rigidbodyCharacter = gameObject.GetComponent<Rigidbody2D> ();
     }
@@ -55,11 +56,12 @@ public class Jugador: MonoBehaviour {
                 gameObject.transform.position += Vector3.right * Time.deltaTime * speed;
                 if (canDash == true) {
                     if (Input.GetKey ("left shift")) {
+                    face.transform.localScale = new Vector3 (1f, .33f, 1f);
                     dashCD.fillAmount = 0;
                     gameObject.GetComponent<TrailRenderer> ().enabled = true;
                         canDash = false;
                         gameObject.transform.position += Vector3.right * speed;
-                        speed += speed * .25f;
+                        speed = 20f;
                     }
                 }
 
@@ -70,11 +72,12 @@ public class Jugador: MonoBehaviour {
                 gameObject.transform.position += Vector3.left * Time.deltaTime * speed;
                 if (canDash == true) {
                     if (Input.GetKey ("left shift")) {
-                        dashCD.fillAmount = 0f;
+                    face.transform.localScale = new Vector3 (1f, .33f, 1f);
+                    dashCD.fillAmount = 0f;
                         gameObject.GetComponent<TrailRenderer> ().enabled = true;
                         canDash = false;
                         gameObject.transform.position += Vector3.left * speed;
-                        speed += speed * .25f;
+                        speed = 20f;
                     }
                 }
             }
@@ -83,7 +86,7 @@ public class Jugador: MonoBehaviour {
             if (Input.GetKey ("s")) {
                 rescale = false;
                 if (gameObject.transform.localScale.y > ogSize.y * .65f) {
-                    gameObject.transform.localScale = new Vector3 (ogSize.x, ogSize.y * .65f, ogSize.z);                    
+                    gameObject.transform.localScale = new Vector3 (ogSize.x, ogSize.y * .65f, ogSize.z);
                 }
             } else if (!Input.GetKey ("s")) {
                 if (gameObject.transform.localScale.y != ogSize.y) {
@@ -91,15 +94,16 @@ public class Jugador: MonoBehaviour {
                 }
             }
         } else if (onAir == true) {
-            if (Input.GetKey ("s")) {
-                rigidbodyCharacter.mass = 3f;
-                rescale = true;
-            } else if (!Input.GetKey ("s")) {
-                rigidbodyCharacter.mass = 1f;
-                rescale = true;
+            if (Input.GetKey ("left ctrl")) {
+                rigidbodyCharacter.mass = 120f;
+                gameObject.transform.localScale = new Vector3 (ogSize.x, ogSize.y * .65f, ogSize.z);
+                rescale = false;
             }
         }
-
+        if (!Input.GetKey ("left ctrl")) {
+            rigidbodyCharacter.mass = 1f;
+            rescale = true;
+        }
         if (rescale == true) {
             gameObject.transform.localScale = ogSize;
         }
@@ -110,9 +114,12 @@ public class Jugador: MonoBehaviour {
                 dashCoolDown -= Time.deltaTime;
                 dashCD.fillAmount += 1f / 5f * Time.deltaTime;
                 textoCDDash.text = dashCoolDown.ToString (".00") + " s";
+                if (dashCoolDown < 2f) {
+                    gameObject.GetComponent<TrailRenderer> ().enabled = false;
+                    face.transform.localScale = Vector3.one;
+                    speed = 15f;
+                }
             } else {
-                speed = speed / 1.25f;
-                gameObject.GetComponent<TrailRenderer> ().enabled = false;
                 dashCoolDown = 5f;
                 dashCD.fillAmount = 1f;
                 textoCDDash.text = " ";
