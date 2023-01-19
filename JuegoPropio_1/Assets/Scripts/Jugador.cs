@@ -49,38 +49,38 @@ public class Jugador: MonoBehaviour {
                 }
             }
         }
-            if (Input.GetKey ("d")) {
+        if (Input.GetKey ("d")) {
             if (face.transform.rotation != Quaternion.Euler (0f, 0f, 0f)) {
                 face.transform.rotation = Quaternion.Euler (0f, 0f, 0f);
             }
-                gameObject.transform.position += Vector3.right * Time.deltaTime * speed;
-                if (canDash == true) {
-                    if (Input.GetKey ("left shift")) {
+            gameObject.transform.position += Vector3.right * Time.deltaTime * speed;
+            if (canDash == true) {
+                if (Input.GetKey ("left shift")) {
                     face.transform.localScale = new Vector3 (1f, .33f, 1f);
                     dashCD.fillAmount = 0;
                     gameObject.GetComponent<TrailRenderer> ().enabled = true;
-                        canDash = false;
-                        gameObject.transform.position += Vector3.right * speed;
-                        speed = 20f;
-                    }
+                    canDash = false;
+                    gameObject.transform.position += Vector3.right * speed;
+                    speed = 20f;
                 }
+            }
 
-            } else if (Input.GetKey ("a")) {
+        } else if (Input.GetKey ("a")) {
             if (face.transform.rotation != Quaternion.Euler (0f, 180f, 0f)) {
                 face.transform.rotation = Quaternion.Euler (0f, 180f, 0f);
             }
-                gameObject.transform.position += Vector3.left * Time.deltaTime * speed;
-                if (canDash == true) {
-                    if (Input.GetKey ("left shift")) {
+            gameObject.transform.position += Vector3.left * Time.deltaTime * speed;
+            if (canDash == true) {
+                if (Input.GetKey ("left shift")) {
                     face.transform.localScale = new Vector3 (1f, .33f, 1f);
                     dashCD.fillAmount = 0f;
-                        gameObject.GetComponent<TrailRenderer> ().enabled = true;
-                        canDash = false;
-                        gameObject.transform.position += Vector3.left * speed;
-                        speed = 20f;
-                    }
+                    gameObject.GetComponent<TrailRenderer> ().enabled = true;
+                    canDash = false;
+                    gameObject.transform.position += Vector3.left * speed;
+                    speed = 20f;
                 }
             }
+        }
 
         if (onAir == false) {
             if (Input.GetKey ("s")) {

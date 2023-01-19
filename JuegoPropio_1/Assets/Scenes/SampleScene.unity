@@ -2365,10 +2365,14 @@ PrefabInstance:
       objectReference: {fileID: 1044453232}
     - target: {fileID: 8657181311222804383, guid: 043c9cb95a3ccd449b2c23acc9ea9850, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8657181311222804383, guid: 043c9cb95a3ccd449b2c23acc9ea9850, type: 3}
       propertyPath: prefabFist
+      value: 
+      objectReference: {fileID: 5862995947130400721, guid: 20072514b6ee6d3489ae4731eff48903, type: 3}
+    - target: {fileID: 8657181311222804383, guid: 043c9cb95a3ccd449b2c23acc9ea9850, type: 3}
+      propertyPath: prefabShot
       value: 
       objectReference: {fileID: 5862995947130400721, guid: 20072514b6ee6d3489ae4731eff48903, type: 3}
     - target: {fileID: 8657181311222804454, guid: 043c9cb95a3ccd449b2c23acc9ea9850, type: 3}
