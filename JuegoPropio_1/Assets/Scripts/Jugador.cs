@@ -7,7 +7,7 @@ using TMPro;
 public class Jugador: MonoBehaviour {
     Vector3 playerPos, prevPos, ogSize, dashImagePos;
     public bool rescale = true, canDash = true, onAir = false;
-    float speed = 15f, jumpForce = 10f, dashCoolDown = 5f, doubleJumpCoolDown = 7.5f;
+    float speed = 15f, jumpForce = 10f, dashCoolDown = 5f, doubleJumpCoolDown = 7.5f, cloneCD = .05f;
     public int jumpCount = 0, jumpLimit = 2;
     Rigidbody2D rigidbodyCharacter;
 
@@ -15,7 +15,7 @@ public class Jugador: MonoBehaviour {
     Image jumpCD, dashCD;
 
     [SerializeField]
-    GameObject face;
+    GameObject face, clone;
 
     [SerializeField]
     TextMeshProUGUI textoCDDash, textoCDJump;
@@ -124,6 +124,15 @@ public class Jugador: MonoBehaviour {
                 dashCD.fillAmount = 1f;
                 textoCDDash.text = " ";
                 canDash = true;
+            }
+
+            if (dashCoolDown >= 2f) {
+                if (cloneCD >= 0f) {
+                    cloneCD -= Time.deltaTime;
+                } else {
+                    Instantiate (clone, transform.position, Quaternion.identity);
+                    cloneCD = .05f;
+                }
             }
         }
 

@@ -347,6 +347,7 @@ MonoBehaviour:
   jumpCD: {fileID: 0}
   dashCD: {fileID: 0}
   face: {fileID: 8657181311322894708}
+  clone: {fileID: 0}
   textoCDDash: {fileID: 0}
   textoCDJump: {fileID: 0}
 --- !u!50 &8657181311222804452
@@ -446,7 +447,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.5707071
+        value: 0.77263016
         inSlope: -0.9116162
         outSlope: -0.9116162
         tangentMode: 0
@@ -454,8 +455,8 @@ TrailRenderer:
         inWeight: 0
         outWeight: 0.40707844
       - serializedVersion: 3
-        time: 0.258582
-        value: 0.41414103
+        time: 0.42086
+        value: 0.81317717
         inSlope: -0.36033753
         outSlope: -0.36033753
         tangentMode: 0
@@ -463,8 +464,8 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.30246842
       - serializedVersion: 3
-        time: 1
-        value: 0.6010101
+        time: 0.9605263
+        value: 0.80293316
         inSlope: 0.41382545
         outSlope: 0.41382545
         tangentMode: 0
@@ -526,6 +527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabShot: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
+  rellenoCD: {fileID: 0}
 --- !u!1 &8657181311322894708
 GameObject:
   m_ObjectHideFlags: 0
