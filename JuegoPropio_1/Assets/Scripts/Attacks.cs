@@ -6,29 +6,42 @@ using UnityEngine.UI;
 public class Attacks: MonoBehaviour {
     [SerializeField]
     GameObject prefabShot;
-    float attackCD = 3f, attackCDR = 0f;
+    public float attackCD, attackCDR , attackCDreference;    
     public Vector2 destination, mousePos;
     public Image rellenoCD;
 
     void Start () {
-        destination = Vector3.right;
-        rellenoCD.fillAmount = 0f;
+        if (attackCD == null) {
+            attackCD = .75f;
+        }
+        if (attackCDR == null) {
+            attackCDR = 1f;
+        }
+        attackCD = attackCD / attackCDR;
+        attackCDreference = attackCD;
     }
 
     // Update is called once per frame
     void Update () {
+        
         mousePos = Input.mousePosition;
         destination = Camera.main.ScreenToWorldPoint (mousePos);
 
         if (attackCD >= 0f) {
             attackCD -= Time.deltaTime;
         } else {
-
             if (Input.GetMouseButtonUp (0)) {
-                Instantiate (prefabShot, gameObject.transform.position, Quaternion.LookRotation (destination));
+                Instantiate (prefabShot, gameObject.transform.position, Quaternion.identity);
+                rellenoCD.enabled = true;
                 rellenoCD.fillAmount = 1f;
-                attackCD = 3f - attackCDR;
+                attackCD = attackCDreference/attackCDR;
             }
+        }
+
+        if (rellenoCD.fillAmount <= 0f && rellenoCD.IsActive () == true) {
+            rellenoCD.enabled = false;
+        } else if (rellenoCD.fillAmount > 0f && rellenoCD.IsActive() == true) {
+            rellenoCD.fillAmount -= Time.deltaTime * (attackCDreference / attackCDR);
         }
     }
 }

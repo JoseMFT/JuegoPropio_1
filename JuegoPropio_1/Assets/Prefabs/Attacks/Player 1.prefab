@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8657181311222804377}
   - component: {fileID: 8657181311222804378}
-  - component: {fileID: 4103385190049617217}
+  - component: {fileID: 27944638876478600}
+  - component: {fileID: 1443455413446055073}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Player
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4103385190049617217
+--- !u!114 &27944638876478600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,6 +93,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8657181311222804454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdcb029a171567a4181a43caae2dfa40, type: 3}
+  m_Script: {fileID: 11500000, guid: 27e44e7b5f9f08d418772e825887f0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifetime: 1
+--- !u!225 &1443455413446055073
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8657181311222804454}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
